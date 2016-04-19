@@ -16,7 +16,7 @@ class SimpleModel(Resource):
     def get(self):
         return 0
 
-api.add_resource(SimpleModel, '/predict/')
+api.add_resource(SimpleModel, 'api/v1/predict/')
 
 if __name__ == '__main__':
      app.run(host="0.0.0.0",port=5000, debug=True)
