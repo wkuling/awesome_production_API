@@ -39,12 +39,12 @@ class SimpleModel(Resource):
     def get(self):
         args = parser.parse_args()
         result = {}
-        result['sample_uuid'] = args['sample_uuid']
+        result['sample_uuid'] = 3#args['sample_uuid']
         result['probability'] = 0.0
-        result['label'] = 0
-        return jsonify(result)
+        result['label'] = 0.0
+        return jsonify(**result)
 
-api.add_resource(SimpleModel, '/api/v1/predict/')
+api.add_resource(SimpleModel, '/api/v1/predict')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0",port=5000, debug=True)
