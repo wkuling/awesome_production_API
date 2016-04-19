@@ -24,7 +24,7 @@ class SimpleModel(Resource):
         print(d)
         return jsonify(d)
 
-api.add_resource(SimpleModel, 'api/v1/predict/')
+api.add_resource(SimpleModel, '/api/v1/predict/')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0",port=5000, debug=True)
