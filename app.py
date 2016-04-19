@@ -9,7 +9,28 @@ app = Flask(__name__)
 api = Api(app)
 
 parser = reqparse.RequestParser()
+parser.add_argument('age',type=int)
+parser.add_argument('job',type=str)
+parser.add_argument('marital',type=str)
+parser.add_argument('education',type=str)
+parser.add_argument('default',type=str)
+parser.add_argument('housing',type=str)
+parser.add_argument('loan',type=str)
+parser.add_argument('contact',type=str)
+parser.add_argument('month',type=str)
+parser.add_argument('day_of_week',type=str)
+parser.add_argument('duration',type=int)
+parser.add_argument('campaign',type=int)
+parser.add_argument('pdays',type=int)
+parser.add_argument('previous',type=int)
+parser.add_argument('poutcome',type=str)
+parser.add_argument('emp.var.rate',type=float)
+parser.add_argument('cons.price.idx',type=float)
+parser.add_argument('cons.conf.idx',type=float)
+parser.add_argument('euribor3m',type=float)
+parser.add_argument('nr.employed',type=float)
 parser.add_argument('sample_uuid',type=str)
+
 
 class SimpleModel(Resource):
     """
@@ -17,12 +38,11 @@ class SimpleModel(Resource):
     """
     def get(self):
         args = parser.parse_args()
-        d = {}
-        d['sample_uuid'] = args['sample_uuid']
-        d['probability'] = 0.0
-        d['label'] = 0
-        print(d)
-        return jsonify(d)
+        result = {}
+        result['sample_uuid'] = args['sample_uuid']
+        result['probability'] = 0.0
+        result['label'] = 0
+        return jsonify(result)
 
 api.add_resource(SimpleModel, '/api/v1/predict/')
 
