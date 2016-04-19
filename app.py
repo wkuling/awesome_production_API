@@ -57,6 +57,7 @@ class SimpleModel(Resource):
     """
     def get(self):
         args = parser.parse_args()
+        print(args)
         x = makecol(args)
         result = {}
         result['sample_uuid'] = args['sample_uuid']
