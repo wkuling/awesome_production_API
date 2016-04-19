@@ -59,6 +59,7 @@ class SimpleModel(Resource):
         args = parser.parse_args()
         print(args)
         x = makecol(args)
+        print(x)
         result = {}
         result['sample_uuid'] = args['sample_uuid']
         result['probability'] = clf.predict_proba(x)[0][1]
