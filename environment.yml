@@ -1,0 +1,8 @@
+name: simple-models-hackathon
+dependencies:
+- python==3.5.1
+- pip
+- flask=0.10.1
+- requests=2.9.1
+- pip:
+    - flask_restful==0.3.5
