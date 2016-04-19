@@ -33,6 +33,7 @@ parser.add_argument('euribor3m',type=float)
 parser.add_argument('nr.employed',type=float)
 parser.add_argument('sample_uuid',type=str)
 
+print("Starting load")
 clf = joblib.load('models/clf_en.pkl')
 cat_col = np.load('models/cat_cols.npy')
 dummy_col = np.load('models/dummy_cols.npy')
@@ -59,12 +60,13 @@ class SimpleModel(Resource):
         x = makecol(args)
         result = {}
         result['sample_uuid'] = args['sample_uuid']
-        result['probability'] = clf.predict_proba(x)
-        result['label'] = clf.predict(x)
+        result['probability'] = clf.predict_proba(x)[0][1]
+        result['label'] = float(clf.predict(x)[0])
         print(result)
         return jsonify(**result)
 
 api.add_resource(SimpleModel, '/api/v1/predict')
 
 if __name__ == '__main__':
+    print("Starting...")
     app.run(host="0.0.0.0",port=5000, debug=True)
