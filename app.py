@@ -49,6 +49,7 @@ def makecol(args):
             idx = np.where(dummy_col == key)
             if len(idx[0])>0:
                 result[idx] = value
+    result = result.reshape(1,-1)
     return result
 
 class SimpleModel(Resource):
