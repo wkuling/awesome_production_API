@@ -4,6 +4,8 @@ Simple api to serve predictions.
 from flask import Flask, jsonify
 from flask_restful import reqparse, abort, Api, Resource
 import json
+import numpy as np
+from sklearn.externals import joblib
 
 app = Flask(__name__)
 api = Api(app)
@@ -31,6 +33,22 @@ parser.add_argument('euribor3m',type=float)
 parser.add_argument('nr.employed',type=float)
 parser.add_argument('sample_uuid',type=str)
 
+clf = joblib.load('models/clf_en.pkl')
+cat_col = np.load('models/cat_cols.npy')
+dummy_col = np.load('models/dummy_cols.npy')
+
+def makecol(args):
+    result = np.zeros(dummy_col.shape)
+    for key, value in args.items():
+        if key in cat_col:
+            idx = np.where(dummy_col == str(key)+'_'+str(value))
+            if len(idx[0])>0:
+                result[idx[0][0]] = 1
+        else:
+            idx = np.where(dummy_col == key)
+            if len(idx[0])>0:
+                result[idx] = value
+    return result
 
 class SimpleModel(Resource):
     """
@@ -38,10 +56,12 @@ class SimpleModel(Resource):
     """
     def get(self):
         args = parser.parse_args()
+        x = makecol(args)
         result = {}
-        result['sample_uuid'] = 3#args['sample_uuid']
-        result['probability'] = 0.0
-        result['label'] = 0.0
+        result['sample_uuid'] = args['sample_uuid']
+        result['probability'] = clf.predict_proba(x)
+        result['label'] = clf.predict(x)
+        print(result)
         return jsonify(**result)
 
 api.add_resource(SimpleModel, '/api/v1/predict')
